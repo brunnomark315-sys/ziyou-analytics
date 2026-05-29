@@ -1,0 +1,26 @@
+{
+  "client_id": "ziyou",
+  "client_name": "ZIYOU Brand",
+  "logo_text": "Z",
+  "logo_gradient_from": "#ffe600",
+  "logo_gradient_to": "#ff9500",
+  "accent_color": "#4f8ef7",
+  "marketplace": "mercadolivre",
+  "site_id": "MLB",
+  "currency": "BRL",
+
+  "password_hash": "d191117e129cc1cb56b2ecf71228f7442c06de809013833e54dd92819a46d48d",
+
+  "features": {
+    "password_protection": true,
+    "snapshots": true,
+    "comparison": true,
+    "pdf_report": true,
+    "insights": true
+  },
+
+  "insights": {
+    "low_visit_threshold": 2,
+    "high_stock_low_visit_ratio": 10
+  }
+}

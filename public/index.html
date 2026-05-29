@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ══ LOGIN OVERLAY ══ -->
+  <div class="login-overlay" id="loginOverlay" style="display:none">
+    <div class="login-box">
+      <div class="login-logo" id="loginLogo">Z</div>
+      <h2 class="login-title" id="loginTitle">Analytics</h2>
+      <p class="login-sub">Dashboard protegido. Digite a senha para continuar.</p>
+      <div class="login-input-wrap">
+        <input
+          type="password"
+          id="loginInput"
+          class="login-input"
+          placeholder="Senha de acesso"
+          autocomplete="current-password"
+        />
+        <button class="login-eye" id="loginEye" aria-label="Mostrar senha">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+      <button class="login-btn" id="loginBtn">Entrar</button>
+      <p class="login-error" id="loginError"></p>
+    </div>
+  </div>
+
+  <!-- ══ LOADING OVERLAY ══ -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loading-logo" id="loadingLogo">Z</div>
+      <div class="loading-spinner"></div>
+      <p class="loading-text" id="loadingText">Carregando dashboard...</p>
+    </div>
+  </div>
+
+  <!-- ══ ERROR OVERLAY ══ -->
+  <div class="error-overlay" id="errorOverlay" style="display:none">
+    <div class="error-box">
+      <div class="error-icon">!</div>
+      <h2>Erro ao carregar dados</h2>
+      <p id="errorMessage">Não foi possível carregar data.json.</p>
+      <button onclick="location.reload()" class="btn-retry">Tentar novamente</button>
+    </div>
+  </div>
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark" id="sidebarLogo">Z</div>
+      <span class="logo-text" id="sidebarClientName">Analytics</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#overview"  class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Overview</span>
+      </a>
+      <a href="#products" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span>Anúncios</span>
+      </a>
+      <a href="#visits-section" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Visitas</span>
+      </a>
+      <a href="#insights" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Insights IA</span>
+      </a>
+    </nav>
+
+    <!-- Histórico de snapshots -->
+    <div class="sidebar-history" id="sidebarHistory" style="display:none">
+      <span class="sidebar-history-label">Histórico</span>
+      <div class="snapshot-list" id="snapshotList"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="account-chip">
+        <div class="account-avatar" id="sidebarAvatar">Z</div>
+        <div class="account-info">
+          <span class="account-name" id="sidebarNickname">—</span>
+          <span class="account-id"  id="sidebarUserId">—</span>
+        </div>
+        <div class="account-status"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title">
+        <h1 id="topbarTitle">Dashboard Analytics</h1>
+        <span class="topbar-sub" id="topbarSub">Mercado Livre · MLB</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="date-range-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="dateRangeLabel">Últimos 30 dias</span>
+        </div>
+
+        <!-- Seletor de comparação de período -->
+        <select class="compare-select" id="compareSelect" style="display:none" title="Comparar com snapshot">
+          <option value="">Comparar com...</option>
+        </select>
+
+        <!-- Botão PDF -->
+        <a href="#" class="btn-icon" id="btnPdf" title="Download PDF executivo" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </a>
+
+        <button class="btn-refresh" id="btnRefresh" title="Recarregar dados">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content-wrapper">
+
+      <!-- ── OVERVIEW ── -->
+      <section class="section" id="overview">
+        <div class="section-header">
+          <h2 class="section-title">Visão Geral</h2>
+          <span class="section-badge" id="lastUpdated">Carregando...</span>
+        </div>
+
+        <!-- ══ HEALTH SCORE CARD ══ -->
+        <div class="health-card" id="healthCard">
+
+          <!-- Coluna esquerda: gauge -->
+          <div class="health-left">
+            <div class="health-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              Marketplace Health Score
+            </div>
+
+            <div class="health-gauge-wrap">
+              <svg class="health-gauge" viewBox="0 0 130 130" id="healthGaugeSvg">
+                <defs>
+                  <linearGradient id="gaugeGradCritical"  x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#ff6b6b"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeGradRegular"   x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffe600"/><stop offset="100%" stop-color="#ffa500"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeGradGood"      x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4f8ef7"/><stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeGradExcellent" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#22d3a0"/><stop offset="100%" stop-color="#059669"/>
+                  </linearGradient>
+                  <filter id="gaugeShadow">
+                    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ef4444" flood-opacity="0.4" id="shadowFilter"/>
+                  </filter>
+                </defs>
+                <!-- Track -->
+                <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="11"/>
+                <!-- Arc -->
+                <circle class="gauge-arc" id="gaugeArc"
+                  cx="65" cy="65" r="56" fill="none"
+                  stroke="url(#gaugeGradCritical)"
+                  stroke-width="11"
+                  stroke-linecap="round"
+                  transform="rotate(-90 65 65)"
+                  stroke-dasharray="351.9"
+                  stroke-dashoffset="351.9"
+                  filter="url(#gaugeShadow)"
+                />
+                <!-- Inner ring -->
+                <circle cx="65" cy="65" r="44" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <!-- Score -->
+                <text class="gauge-num" id="gaugeNum" x="65" y="59" text-anchor="middle" fill="#f0f0ff" font-size="30" font-weight="800" font-family="Inter,sans-serif">—</text>
+                <text x="65" y="76" text-anchor="middle" fill="#44445a" font-size="11" font-family="Inter,sans-serif">de 100</text>
+              </svg>
+
+              <div class="health-level-badge" id="healthLevelBadge">—</div>
+            </div>
+
+            <div class="health-trend-wrap" id="healthTrendWrap">
+              <span class="health-trend-label">vs. período anterior</span>
+              <span class="health-trend-value" id="healthTrendValue">—</span>
+            </div>
+          </div>
+
+          <!-- Coluna central: barras por critério -->
+          <div class="health-middle">
+            <p class="health-section-title">Pontuação por critério</p>
+            <div class="health-bars" id="healthBars">
+              <div class="health-bar-row skeleton"><div class="hb-label">—</div><div class="hb-track"><div class="hb-fill" style="width:0%"></div></div><div class="hb-score">—</div></div>
+            </div>
+
+            <p class="health-section-title" style="margin-top:18px">Por categoria</p>
+            <div class="health-cats" id="healthCats"></div>
+          </div>
+
+          <!-- Coluna direita: ações -->
+          <div class="health-right">
+            <p class="health-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Ações prioritárias
+            </p>
+            <ol class="health-actions" id="healthActions">
+              <li class="skeleton" style="height:52px;border-radius:8px"></li>
+              <li class="skeleton" style="height:52px;border-radius:8px;margin-top:8px"></li>
+              <li class="skeleton" style="height:52px;border-radius:8px;margin-top:8px"></li>
+            </ol>
+          </div>
+
+        </div>
+        <!-- /HEALTH SCORE CARD -->
+
+        <!-- Aviso de comparação ativo -->
+        <div class="compare-banner" id="compareBanner" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span id="compareBannerText">Comparando com —</span>
+          <button class="compare-clear" id="compareClear">✕</button>
+        </div>
+
+        <div class="kpi-grid" id="kpiGrid">
+          <!-- KPI cards -->
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><div class="kpi-body"><span class="kpi-label">Anúncios Ativos</span><span class="kpi-value" id="kpi-listings">—</span><span class="kpi-delta neutral" id="kpi-listings-delta"></span></div></div>
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="kpi-body"><span class="kpi-label">Total de Visitas</span><span class="kpi-value" id="kpi-visits">—</span><span class="kpi-delta neutral" id="kpi-visits-delta"></span></div></div>
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="kpi-body"><span class="kpi-label">Total de Vendas</span><span class="kpi-value" id="kpi-sales">—</span><span class="kpi-delta" id="kpi-sales-delta"></span></div></div>
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="kpi-body"><span class="kpi-label">Receita</span><span class="kpi-value" id="kpi-revenue">—</span><span class="kpi-delta" id="kpi-revenue-delta"></span></div></div>
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><div class="kpi-body"><span class="kpi-label">Ticket Médio</span><span class="kpi-value" id="kpi-ticket">—</span><span class="kpi-delta" id="kpi-ticket-delta"></span></div></div>
+          <div class="kpi-card"><div class="kpi-icon kpi-icon--teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div class="kpi-body"><span class="kpi-label">Estoque Total</span><span class="kpi-value" id="kpi-stock">—</span><span class="kpi-delta" id="kpi-stock-delta"></span></div></div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-card chart-card--wide">
+            <div class="chart-header">
+              <div><h3 class="chart-title">Visitas por Dia</h3><p class="chart-subtitle">Últimos 30 dias</p></div>
+              <div class="chart-legend"><span class="legend-dot" style="background:var(--accent-blue)"></span><span>Visitas</span></div>
+            </div>
+            <div class="chart-container"><canvas id="visitsChart"></canvas></div>
+          </div>
+          <div class="chart-card" id="sales">
+            <div class="chart-header">
+              <div><h3 class="chart-title">Vendas por Dia</h3><p class="chart-subtitle">Últimos 30 dias</p></div>
+              <div class="chart-legend"><span class="legend-dot" style="background:var(--accent-green)"></span><span>Vendas</span></div>
+            </div>
+            <div class="chart-container"><canvas id="salesChart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ANÚNCIOS ── -->
+      <section class="section" id="products">
+        <div class="section-header">
+          <h2 class="section-title">Anúncios</h2>
+          <div class="section-controls">
+            <input type="text" class="search-input" id="productSearch" placeholder="Buscar..." />
+            <span class="section-badge" id="productsCount">—</span>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th class="text-right">Preço</th>
+                  <th class="text-right">Estoque</th>
+                  <th class="text-right">Vendidos</th>
+                  <th class="text-right">Visitas</th>
+                  <th class="text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody id="productsBody">
+                <tr><td colspan="6" class="table-empty"><div class="spinner"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── RANKING ── -->
+      <section class="section" id="visits-section">
+        <div class="section-header">
+          <h2 class="section-title">Ranking de Produtos</h2>
+          <span class="section-badge">Por Visitas</span>
+        </div>
+        <div class="ranking-grid">
+          <div class="chart-card">
+            <div class="chart-header"><div><h3 class="chart-title">Mais Visitados</h3><p class="chart-subtitle">Top 5 por visitas</p></div></div>
+            <div class="chart-container chart-container--bar"><canvas id="rankingChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div><h3 class="chart-title">Visitas por Categoria</h3><p class="chart-subtitle">Distribuição</p></div></div>
+            <div class="chart-container chart-container--doughnut"><canvas id="categoryChart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── INSIGHTS ── -->
+      <section class="section" id="insights">
+        <div class="section-header">
+          <h2 class="section-title">Insights de IA</h2>
+          <span class="section-badge ai-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Gerado automaticamente
+          </span>
+        </div>
+        <div class="insights-grid" id="insightsGrid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

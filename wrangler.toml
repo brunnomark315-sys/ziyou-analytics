@@ -1,0 +1,16 @@
+# wrangler.toml — Cloudflare Pages configuration
+# Documentação: https://developers.cloudflare.com/pages/
+
+name            = "ziyou-analytics"
+pages_build_output_dir = "public"
+
+# Build command (nenhum — site 100% estático)
+# [build]
+# command = ""
+
+# Variáveis de ambiente de produção (não-sensíveis)
+[vars]
+ENVIRONMENT = "production"
+
+# Compatibilidade
+compatibility_date = "2024-01-01"

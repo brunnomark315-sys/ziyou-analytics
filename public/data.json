@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "fetched_at": "2026-05-29T16:07:00-03:00",
+    "period_from": "2026-04-29",
+    "period_to": "2026-05-29",
+    "seller_id": "3277035412",
+    "version": "2.0"
+  },
+  "account": {
+    "nickname": "ZIYOUBRAND",
+    "user_id": 3277035412,
+    "site_id": "MLB",
+    "mercadoenvios": false,
+    "account_type": "personal"
+  },
+  "reputation": {
+    "level_id": null,
+    "power_seller_status": null,
+    "transactions": { "canceled": 0, "completed": 0, "period": "historic", "total": 0,
+      "ratings": { "negative": 0, "neutral": 0, "positive": 0 } },
+    "metrics": {
+      "sales": { "period": "365 days", "completed": 0 },
+      "claims": { "period": "365 days", "rate": 0, "value": 0 },
+      "delayed_handling_time": { "period": "365 days", "rate": 0, "value": 0 },
+      "cancellations": { "period": "365 days", "rate": 0, "value": 0 }
+    }
+  },
+  "kpis": {
+    "active_listings": 11,
+    "total_visits": 11,
+    "total_sales": 0,
+    "revenue": 0,
+    "avg_ticket": 0,
+    "total_stock": 270
+  },
+  "health_score": {
+    "total": 27,
+    "level": "Crítico",
+    "color": "#ef4444",
+    "emoji": "🚨",
+    "bonus": 0,
+    "breakdown": {
+      "visits":     { "score": 5,  "max": 20, "label": "Visitas" },
+      "conversion": { "score": 13, "max": 25, "label": "Conversão" },
+      "no_visits":  { "score": 2,  "max": 15, "label": "Sem Visitas" },
+      "idle_stock": { "score": 4,  "max": 15, "label": "Estoque Parado" },
+      "coverage":   { "score": 3,  "max": 10, "label": "Cobertura" },
+      "sales":      { "score": 0,  "max": 15, "label": "Vendas" }
+    },
+    "details": {
+      "visits_per_listing": 1.0,
+      "conversion_rate": 0.0,
+      "no_visit_pct": 63.6,
+      "idle_stock_pct": 45.5,
+      "coverage_pct": 36.4
+    },
+    "actions": [
+      {
+        "priority": 1,
+        "label":    "Ativar ML Ads",
+        "body":     "Produto Patrocinado aumenta visitas imediatamente sem alterar o catálogo.",
+        "impact":   "alto"
+      },
+      {
+        "priority": 2,
+        "label":    "Habilitar Mercado Envios",
+        "body":     "Ativa o filtro 'Frete grátis' e o selo Full — aumenta CTR organicamente.",
+        "impact":   "alto"
+      },
+      {
+        "priority": 3,
+        "label":    "Revisar 7 anúncios sem visitas",
+        "body":     "Inclua palavras-chave populares no título e substitua fotos por imagens de lifestyle.",
+        "impact":   "médio"
+      }
+    ],
+    "category_scores": {
+      "Jaquetas & Corta Vento": { "score": 29, "visits": 6,  "products": 3, "coverage": 33.3 },
+      "Leggings":               { "score": 46, "visits": 2,  "products": 1, "coverage": 100.0 },
+      "Shorts":                 { "score": 24, "visits": 2,  "products": 3, "coverage": 33.3 },
+      "Macaquinhos":            { "score": 28, "visits": 1,  "products": 2, "coverage": 50.0 },
+      "Tops Femininos":         { "score": 13, "visits": 0,  "products": 2, "coverage": 0.0 }
+    }
+  },
+  "visits_series": [0,0,1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,1,1],
+  "sales_series":  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  "products": [
+    { "id":"MLB4615628517","title":"Corta Vento Feminino Casual Tecnológico Ziyou","price":269.90,"stock":20,"sold":0,"visits":6,"status":"active","listing_type":"gold_special","category":"Jaquetas & Corta Vento","permalink":"https://produto.mercadolivre.com.br/MLB-4615628517-corta-vento-feminino-casual-tecnologico-ziyou-_JM" },
+    { "id":"MLB4718957825","title":"Top Feminino Fitness Hiit Alças Transpassadas Ziyou","price":119.90,"stock":13,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Tops Femininos","permalink":"https://produto.mercadolivre.com.br/MLB-4718957825-top-feminino-fitness-hiit-alcas-transpassadas-ziyou-_JM" },
+    { "id":"MLB6650132448","title":"Top Essenza Alças Reguláveis Costas Abertas Feminino Ziyou","price":141.90,"stock":45,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Tops Femininos","permalink":"https://produto.mercadolivre.com.br/MLB-6650132448-top-essenza-alcas-regulaveis-costas-abertas-feminino-ziyou-_JM" },
+    { "id":"MLB6855209532","title":"Short Feminino Fitness Aura Cós Transpassado Ziyou","price":139.90,"stock":38,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Shorts","permalink":"https://produto.mercadolivre.com.br/MLB-6855209532-short-feminino-fitness-aura-cos-transpassado-ziyou-_JM" },
+    { "id":"MLB6730029934","title":"Short Duplo Masculino Fitness Tecnológico Academia Ziyou","price":229.90,"stock":21,"sold":0,"visits":2,"status":"active","listing_type":"gold_special","category":"Shorts","permalink":"https://produto.mercadolivre.com.br/MLB-6730029934-short-duplo-masculino-fitness-tecnologico-academia-ziyou-_JM" },
+    { "id":"MLB4719083161","title":"Macaquinho Feminino Casual Tecnológico Una Ziyou","price":365.90,"stock":21,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Macaquinhos","permalink":"https://produto.mercadolivre.com.br/MLB-4719083161-macaquinho-feminino-casual-tecnologico-una-ziyou-_JM" },
+    { "id":"MLB4660238343","title":"Macaquinho Honey Feminino Fitness Costas Nuas Ziyou","price":269.90,"stock":11,"sold":0,"visits":1,"status":"active","listing_type":"gold_special","category":"Macaquinhos","permalink":"https://produto.mercadolivre.com.br/MLB-4660238343-macaquinho-honey-feminino-fitness-costas-nuas-ziyou-_JM" },
+    { "id":"MLB6857418354","title":"Jaqueta Feminina Casual Tecnológica Kora Ziyou","price":265.90,"stock":27,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Jaquetas & Corta Vento","permalink":"https://produto.mercadolivre.com.br/MLB-6857418354-jaqueta-feminina-casual-tecnologica-kora-ziyou-_JM" },
+    { "id":"MLB6733169594","title":"Legging Feminina Academia Cintura Alta Essenza Ziyou","price":209.00,"stock":33,"sold":0,"visits":2,"status":"active","listing_type":"gold_special","category":"Leggings","permalink":"https://produto.mercadolivre.com.br/MLB-6733169594-legging-feminina-academia-cintura-alta-essenza-ziyou-_JM" },
+    { "id":"MLB6723062298","title":"Short Masculino Fitness Tecnológico Basic Ziyou","price":179.90,"stock":14,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Shorts","permalink":"https://produto.mercadolivre.com.br/MLB-6723062298-short-masculino-fitness-tecnologico-basic-ziyou-_JM" },
+    { "id":"MLB6857441450","title":"Jaqueta Feminina Casual Tecnológica Brisa Ziyou","price":259.90,"stock":27,"sold":0,"visits":0,"status":"active","listing_type":"gold_special","category":"Jaquetas & Corta Vento","permalink":"https://produto.mercadolivre.com.br/MLB-6857441450-jaqueta-feminina-casual-tecnologica-brisa-ziyou-_JM" }
+  ],
+  "categories": {
+    "Jaquetas & Corta Vento": 6,
+    "Shorts": 2,
+    "Leggings": 2,
+    "Macaquinhos": 1,
+    "Tops Femininos": 0
+  },
+  "financial": { "total_orders": 0, "total_revenue": 0, "total_fees": 0, "total_shipping_cost": 0, "net_revenue": 0 },
+  "orders": [],
+  "insights": [
+    {
+      "type": "ranking", "title": "Produtos mais visitados",
+      "items": [
+        { "rank":1, "id":"MLB4615628517", "title":"Corta Vento Feminino Casual Tecnológico Ziyou", "visits":6, "share":54.5, "stock":20, "permalink":"https://produto.mercadolivre.com.br/MLB-4615628517-corta-vento-feminino-casual-tecnologico-ziyou-_JM" },
+        { "rank":2, "id":"MLB6730029934", "title":"Short Duplo Masculino Fitness Tecnológico Academia Ziyou", "visits":2, "share":18.2, "stock":21, "permalink":"https://produto.mercadolivre.com.br/MLB-6730029934-short-duplo-masculino-fitness-tecnologico-academia-ziyou-_JM" },
+        { "rank":3, "id":"MLB6733169594", "title":"Legging Feminina Academia Cintura Alta Essenza Ziyou", "visits":2, "share":18.2, "stock":33, "permalink":"https://produto.mercadolivre.com.br/MLB-6733169594-legging-feminina-academia-cintura-alta-essenza-ziyou-_JM" }
+      ]
+    },
+    {
+      "type": "no_visits", "title": "Produtos sem nenhuma visita", "count": 7,
+      "items": [
+        { "id":"MLB4718957825","title":"Top Feminino Fitness Hiit Alças Transpassadas Ziyou","stock":13,"permalink":"https://produto.mercadolivre.com.br/MLB-4718957825-top-feminino-fitness-hiit-alcas-transpassadas-ziyou-_JM" },
+        { "id":"MLB6650132448","title":"Top Essenza Alças Reguláveis Costas Abertas Feminino Ziyou","stock":45,"permalink":"https://produto.mercadolivre.com.br/MLB-6650132448-top-essenza-alcas-regulaveis-costas-abertas-feminino-ziyou-_JM" },
+        { "id":"MLB6855209532","title":"Short Feminino Fitness Aura Cós Transpassado Ziyou","stock":38,"permalink":"https://produto.mercadolivre.com.br/MLB-6855209532-short-feminino-fitness-aura-cos-transpassado-ziyou-_JM" },
+        { "id":"MLB4719083161","title":"Macaquinho Feminino Casual Tecnológico Una Ziyou","stock":21,"permalink":"https://produto.mercadolivre.com.br/MLB-4719083161-macaquinho-feminino-casual-tecnologico-una-ziyou-_JM" },
+        { "id":"MLB6857418354","title":"Jaqueta Feminina Casual Tecnológica Kora Ziyou","stock":27,"permalink":"https://produto.mercadolivre.com.br/MLB-6857418354-jaqueta-feminina-casual-tecnologica-kora-ziyou-_JM" }
+      ]
+    },
+    {
+      "type": "high_stock_low_demand", "title": "Estoque alto com baixa procura",
+      "items": [
+        { "id":"MLB6650132448","title":"Top Essenza Alças Reguláveis Costas Abertas Feminino Ziyou","stock":45,"visits":0,"price":141.90,"permalink":"https://produto.mercadolivre.com.br/MLB-6650132448-top-essenza-alcas-regulaveis-costas-abertas-feminino-ziyou-_JM" },
+        { "id":"MLB6855209532","title":"Short Feminino Fitness Aura Cós Transpassado Ziyou","stock":38,"visits":0,"price":139.90,"permalink":"https://produto.mercadolivre.com.br/MLB-6855209532-short-feminino-fitness-aura-cos-transpassado-ziyou-_JM" },
+        { "id":"MLB6733169594","title":"Legging Feminina Academia Cintura Alta Essenza Ziyou","stock":33,"visits":2,"price":209.00,"permalink":"https://produto.mercadolivre.com.br/MLB-6733169594-legging-feminina-academia-cintura-alta-essenza-ziyou-_JM" }
+      ]
+    },
+    { "type":"mercadoenvios_off","title":"Mercado Envios não habilitado","suggestion":"Habilitar frete ML aumenta visibilidade no filtro 'Frete grátis'." },
+    { "type":"traffic_concentration","title":"54.5% do tráfego em 1 produto","product":"Corta Vento Feminino Casual Tecnológico Ziyou","share":54.5,"suggestion":"Otimize os demais anúncios para distribuir o tráfego." }
+  ]
+}

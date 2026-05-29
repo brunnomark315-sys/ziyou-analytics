@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+uv.lock
+
+# Auth (NUNCA commitar)
+~/.mercado-livre-analytics/
+
+# OS
+.DS_Store
+*.swp
+
+# IDE
+.idea/
+.vscode/
+.claude/
+
+# Logs
+*.log
+/tmp/

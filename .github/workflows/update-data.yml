@@ -1,0 +1,137 @@
+name: Update Dashboard Data
+
+# ─────────────────────────────────────────────
+# Para adicionar um novo cliente, inclua-o na matriz:
+#   strategy:
+#     matrix:
+#       client: [ziyou, cliente2]
+# E configure os secrets correspondentes:
+#   ML_TOKENS_JSON_ZIYOU, ML_CLIENT_ID_ZIYOU, ML_CLIENT_SECRET_ZIYOU
+# ─────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # diariamente às 07:00 UTC (04:00 Brasília)
+
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'ID do cliente'
+        required: false
+        default: 'ziyou'
+      reason:
+        description: 'Motivo'
+        required: false
+        default: 'execução manual'
+
+permissions:
+  contents: write
+  secrets:  write
+
+jobs:
+  update:
+    name: Fetch → Build → PDF → Deploy (${{ github.event.inputs.client || 'ziyou' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      CLIENT_ID: ${{ github.event.inputs.client || 'ziyou' }}
+
+    steps:
+      # ── 1. Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ── 2. Python
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      # ── 3. Dependências Python
+      - name: Install Python deps
+        run: |
+          pip install httpx playwright --quiet
+          playwright install --with-deps chromium
+
+      # ── 4. Restaurar tokens ML
+      #
+      # Configuração única (terminal local):
+      #   cat ~/.mercado-livre-analytics/tokens.json \
+      #     | gh secret set ML_TOKENS_JSON --repo SEU_USUARIO/SEU_REPO
+      - name: Restore ML tokens
+        run: |
+          mkdir -p "$HOME/.mercado-livre-analytics"
+          echo '${{ secrets.ML_TOKENS_JSON }}' \
+            > "$HOME/.mercado-livre-analytics/tokens.json"
+
+      # ── 5. Fetch ML data + save snapshot + build public/
+      - name: Fetch data & build
+        env:
+          ML_CLIENT_ID:     ${{ secrets.ML_CLIENT_ID }}
+          ML_CLIENT_SECRET: ${{ secrets.ML_CLIENT_SECRET }}
+        run: python scripts/fetch_data.py --client "$CLIENT_ID"
+
+      # ── 6. Rotação de tokens (ML pode rotacionar o refresh_token)
+      - name: Persist updated tokens
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPDATED=$(cat "$HOME/.mercado-livre-analytics/tokens.json")
+          gh secret set ML_TOKENS_JSON --body "$UPDATED" \
+            --repo "${{ github.repository }}"
+
+      # ── 7. Gerar PDF executivo
+      - name: Generate PDF report
+        run: python scripts/generate_pdf.py --client "$CLIENT_ID"
+
+      # ── 8. Commit: data.json + snapshots + relatório PDF
+      - name: Commit updated assets
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/data.json \
+            public/config.json \
+            public/snapshots/ \
+            public/reports/ \
+            "clients/$CLIENT_ID/snapshots/"
+
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança para commitar."
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "chore(data): ${CLIENT_ID} — ${TIMESTAMP} [skip ci]"
+            git push
+            echo "Assets atualizados e publicados."
+          fi
+
+      # ── 9. Deploy Cloudflare Pages (ativo se CF_API_TOKEN existir)
+      - name: Deploy to Cloudflare Pages
+        if: ${{ secrets.CF_API_TOKEN != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken:  ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command:   pages deploy public --project-name=ziyou-analytics --commit-dirty=true
+
+      # ── 10. Notificação webhook (opcional)
+      - name: Notify
+        if: ${{ secrets.NOTIFY_URL != '' && success() }}
+        run: |
+          DATE=$(date -u '+%d/%m/%Y %H:%M')
+          curl -s -X POST "${{ secrets.NOTIFY_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"text\":\"✅ ZIYOU Analytics atualizado — ${DATE} UTC\"}"
+
+      # ── 11. Notificação de falha
+      - name: Notify failure
+        if: ${{ secrets.NOTIFY_URL != '' && failure() }}
+        run: |
+          curl -s -X POST "${{ secrets.NOTIFY_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"text\":\"❌ Falha na atualização do ZIYOU Analytics. Verifique o log em GitHub Actions.\"}"
