@@ -77,7 +77,13 @@ async function fetchJSON(url) {
 // ─────────────────────────────────────────────
 
 async function loadConfig() {
-  try { return await fetchJSON('config.json'); } catch { return {}; }
+  try {
+    return await fetchJSON('config.json');
+  } catch (e) {
+    // Falha ao carregar config: mantém o dashboard BLOQUEADO por segurança
+    console.warn('[auth] config.json não carregou — login exigido:', e.message);
+    return { _loadFailed: true, features: { password_protection: true }, password_hash: '__BLOCKED__' };
+  }
 }
 
 function applyBranding(cfg) {
@@ -118,8 +124,16 @@ function applyBranding(cfg) {
 const AUTH_KEY = 'ziyou_auth';
 
 function isAuthenticated(cfg) {
-  if (!cfg.features?.password_protection || !cfg.password_hash) return true;
-  return sessionStorage.getItem(AUTH_KEY) === cfg.password_hash;
+  // Sem proteção configurada → aberto
+  if (!cfg.features?.password_protection) return true;
+  // Proteção ativa mas sem hash → bloqueado (não permite acesso)
+  if (!cfg.password_hash) return false;
+  // Config falhou ao carregar → bloqueado
+  if (cfg._loadFailed) return false;
+  // Verifica sessão salva
+  const stored = sessionStorage.getItem(AUTH_KEY);
+  if (!stored) return false;
+  return stored === cfg.password_hash;
 }
 
 async function requireLogin(cfg) {
